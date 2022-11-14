@@ -32,4 +32,10 @@ public class BudgetResponse {
 		this.result = result;
 	}
 
+	@Override
+	public String toString() {
+		return "BudgetResponse [code=" + code + ", message=" + message + ", result=" + result + "]";
+	}
+
+	
 }

@@ -29,4 +29,17 @@ public class MonthlyBudgetDao {
 			}
 		},startDate,endDate);
 	}
+	
+	public List<MonthlyBudget> getMonthlyBudgets2(String startDate, String endDate) {
+		final String sql = "select * from monthlybudget WHERE month between ? and ?  ";
+		return jdbcTemplate.query(sql, this::row2Map,startDate,endDate);
+	}
+	
+	private MonthlyBudget row2Map(ResultSet rs, int rowNum) throws SQLException  {
+		MonthlyBudget monthlyDudget = new MonthlyBudget();
+		monthlyDudget.setBudget(rs.getInt("budget"));
+		monthlyDudget.setMonth(rs.getString("month"));
+		return monthlyDudget;
+		
+	}
 }

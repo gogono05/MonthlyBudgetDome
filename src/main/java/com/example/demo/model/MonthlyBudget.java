@@ -6,6 +6,14 @@ public class MonthlyBudget {
 
 	private String month;
 	private Integer budget;
+	
+	public MonthlyBudget() {
+	}
+
+	public MonthlyBudget(String month, Integer budget) {
+		this.month = month;
+		this.budget = budget;
+	}
 
 	public String getMonth() {
 		return month;
@@ -21,6 +29,11 @@ public class MonthlyBudget {
 
 	public void setBudget(Integer budget) {
 		this.budget = budget;
+	}
+
+	@Override
+	public String toString() {
+		return "MonthlyBudget [month=" + month + ", budget=" + budget + "]";
 	}
 
 }

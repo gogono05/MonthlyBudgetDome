@@ -21,4 +21,9 @@ public class BudgetQuery {
 		this.endDate = endDate;
 	}
 
+	@Override
+	public String toString() {
+		return "BudgetQuery [startDate=" + startDate + ", endDate=" + endDate + "]";
+	}
+
 }

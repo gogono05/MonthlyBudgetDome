@@ -4,30 +4,34 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-@SuppressWarnings("all")
+
 public class CheckMethod {
 
 	public static boolean formatCheck(BudgetQuery budgetQuery) {
+		if (budgetQuery.getStartDate() == null || budgetQuery.getEndDate() == null
+				|| budgetQuery.getStartDate().length() != 8 || budgetQuery.getEndDate().length() != 8) {
+			return true;
+		}
 		try {
-			LocalDate stratLocalDate = LocalDate.parse(budgetQuery.getStartDate(),DateTimeFormatter.ofPattern("yyyyMMdd"));
-			LocalDate endLocalDate = LocalDate.parse(budgetQuery.getEndDate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+			getLocalDate(budgetQuery.getStartDate());
+			getLocalDate(budgetQuery.getEndDate());
+		
+			return false;
 		} catch (DateTimeParseException e) {
 			return true;
 		}
-		if (budgetQuery.getStartDate() == null || budgetQuery.getEndDate() == null
-				|| budgetQuery.getStartDate().length() != 8 || budgetQuery.getEndDate().length() != 8) {
+	}
+
+	public static boolean dateCheck(BudgetQuery budgetQuery) {
+		LocalDate stratLocalDate = getLocalDate(budgetQuery.getStartDate());
+		LocalDate endLocalDate = getLocalDate(budgetQuery.getEndDate());
+		if (stratLocalDate.isAfter(endLocalDate)) {
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean dateCheck(BudgetQuery budgetQuery) {
-		LocalDate stratLocalDate = LocalDate.parse(budgetQuery.getStartDate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
-		LocalDate endLocalDate = LocalDate.parse(budgetQuery.getEndDate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
-
-		if (stratLocalDate.isAfter(endLocalDate)) {
-			return true;
-		}
-		return false;
+	private static LocalDate getLocalDate(String dateString) {
+		return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyyMMdd"));
 	}
 }
