@@ -18,7 +18,7 @@ public class MonthlyBudgetService {
 	@Autowired
 	MonthlyBudgetDao monthlyBudgetDao;
 
-	public List<MonthlyBudget> getBudgetResponse(LocalDate startLocalDate, LocalDate endLocalDate)  {
+	public List<MonthlyBudget> getBudgetResponse(LocalDate startLocalDate, LocalDate endLocalDate) {
 
 		String startMonth = keyToString(startLocalDate);
 		String endMonth = keyToString(endLocalDate);
@@ -27,7 +27,7 @@ public class MonthlyBudgetService {
 		Map<String, Integer> monthlyBudgetMap = monthlyBudgetList.stream()
 				.collect(Collectors.toMap(MonthlyBudget::getMonth, MonthlyBudget::getBudget));
 		List<MonthlyBudget> resMonthlyBudget = getResult(monthlyBudgetMap, startLocalDate, endLocalDate);
-
+		System.out.println(resMonthlyBudget);
 		int startDayOfMonth = startLocalDate.getDayOfMonth();// 取得start天數
 		int endDayOfMonth = endLocalDate.getDayOfMonth();// 取得end天數
 
@@ -41,8 +41,7 @@ public class MonthlyBudgetService {
 		int startMonthBudget = startDayBudget * (startLocalDate.lengthOfMonth() - startDayOfMonth + 1);
 		resMonthlyBudget.get(0).setBudget(startMonthBudget);// ================
 
-		int endDayBudget = resMonthlyBudget.get(resMonthlyBudget.size() - 1).getBudget()
-				/ endLocalDate.lengthOfMonth();// 計算end每日可用金額
+		int endDayBudget = resMonthlyBudget.get(resMonthlyBudget.size() - 1).getBudget() / endLocalDate.lengthOfMonth();// 計算end每日可用金額
 		int endMonthBudget = endDayBudget * endDayOfMonth;// 計算end月份可用總金額
 		resMonthlyBudget.get(resMonthlyBudget.size() - 1).setBudget(endMonthBudget);// ==================
 
@@ -51,7 +50,7 @@ public class MonthlyBudgetService {
 	}
 
 	public List<MonthlyBudget> getResult(Map<String, Integer> monthlyBudgetMap, LocalDate startLocalDate,
-			LocalDate endLocalDate)  {
+			LocalDate endLocalDate) {
 		List<MonthlyBudget> resMonthlyBudget = new ArrayList<MonthlyBudget>();
 		while (checkDate(startLocalDate, endLocalDate)) {
 			String key = keyToString(startLocalDate);
@@ -59,7 +58,7 @@ public class MonthlyBudgetService {
 			if (value == null) {
 				MonthlyBudget monthlyBudget = new MonthlyBudget(key, 0);
 				resMonthlyBudget.add(monthlyBudget);
-			}else {
+			} else {
 				resMonthlyBudget.add(new MonthlyBudget(key, value));
 			}
 			startLocalDate = startLocalDate.plusMonths(1);
@@ -68,7 +67,7 @@ public class MonthlyBudgetService {
 	}
 
 	private boolean checkDate(LocalDate startLocalDate, LocalDate endLocalDate) {
-			return startLocalDate.isBefore(endLocalDate);
+		return startLocalDate.isBefore(endLocalDate)||startLocalDate.isEqual(endLocalDate);
 	}
 
 	private String keyToString(LocalDate localDate) {
